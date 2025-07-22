@@ -13,7 +13,6 @@ The goal of the project was to predict house prices using real-world housing dat
 
  Data Collection and Preprocessing
 The dataset used for this project was the California Housing dataset, a popular dataset available within the scikit-learn library. This dataset contains various features related to housing demographics and geographic data in California, including:
-
 Median income (MedInc)
 
 House age (HouseAge)
