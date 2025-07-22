@@ -87,4 +87,5 @@ Testing APIs using Python scripts and JSON data.
 Through this project, I gained a comprehensive understanding of how data science models are not just trained but also deployed and consumed in real-time applications. This experience has given me a strong foundation in model deployment, API development, and full-stack machine learning systems, which are crucial for real-world AI/ML jobs. It also emphasized the importance of clean code, organized architecture, and usability in developing production-ready applications. I am grateful to CodTech for providing this opportunity and look forward to applying these skills in future projects.
 
 OUTPUT:
+
 <img width="657" height="753" alt="pic" src="https://github.com/user-attachments/assets/03c9c2b1-1bda-4fae-b671-2d4dfb698127" />
