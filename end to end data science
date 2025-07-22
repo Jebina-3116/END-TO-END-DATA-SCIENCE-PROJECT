@@ -1,0 +1,83 @@
+# train_model.py
+import pandas as pd
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+import pickle
+
+# Load dataset
+data = fetch_california_housing()
+df = pd.DataFrame(data=data.data, columns=data.feature_names)
+df["target"] = data.target
+
+# Train/test split
+X = df.drop("target", axis=1)
+y = df["target"]
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Train model
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+# Save model
+with open("model.pkl", "wb") as f:
+    pickle.dump(model, f)
+
+print("✅ Model trained and saved to model.pkl")
+# app.py
+from flask import Flask, request, jsonify
+import pickle
+import numpy as np
+
+# Load model
+with open("model.pkl", "rb") as f:
+    model = pickle.load(f)
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return "🏠 House Price Prediction API is Running!"
+
+@app.route("/predict", methods=["POST"])
+def predict():
+    data = request.get_json(force=True)
+
+    # Extract features in correct order
+    features = np.array([
+        data["MedInc"],
+        data["HouseAge"],
+        data["AveRooms"],
+        data["AveBedrms"],
+        data["Population"],
+        data["AveOccup"],
+        data["Latitude"],
+        data["Longitude"]
+    ]).reshape(1, -1)
+
+    # Predict
+    prediction = model.predict(features)[0]
+
+    return jsonify({
+        "predicted_price": round(prediction, 2)
+    })
+
+if __name__ == "__main__":
+    app.run(debug=True)
+import requests
+
+url = "http://127.0.0.1:5000/predict"
+
+data = {
+    "MedInc": 8.3,
+    "HouseAge": 25.0,
+    "AveRooms": 6.0,
+    "AveBedrms": 1.0,
+    "Population": 1000,
+    "AveOccup": 3.5,
+    "Latitude": 34.0,
+    "Longitude": -118.0
+}
+
+response = requests.post(url, json=data)
+print("Predicted House Price:", response.json())
